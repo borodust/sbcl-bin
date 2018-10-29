@@ -1,0 +1,37 @@
+language: common-lisp
+sudo: false
+
+addons:
+  apt:
+    packages:
+
+env:
+  global:
+  - VERSION: 1.4.13
+  - TARGET_ARCHIVE: sbcl-$VERSION.tar.gz
+  - PATH: ~/bin/:$PATH
+  - secure: ""
+
+branches:
+  only:
+    - "/^v\\d+(\\.\\d+)+$/"
+
+os:
+  - linux
+  - osx
+
+install:
+  - curl -L http://bodge.borodust.org/files/install.sh | sh
+  - ln -sf $HOME/opt/lisp/run-sbcl.sh ~/bin/sbcl
+
+script:
+  - ./make.sh $VERSION
+
+# deploy:
+#   provider: releases
+#   api-key: $GITHUB_TOKEN
+#   file: $$TARGET_ARCHIVE
+#   skip_cleanup: true
+#   overwrite: true
+#   on:
+#     tags: true
